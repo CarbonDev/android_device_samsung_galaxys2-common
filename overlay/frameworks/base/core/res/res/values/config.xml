@@ -162,4 +162,7 @@
 
     <!-- Boolean to enable stk functionality on Samsung phones -->
     <bool name="config_samsung_stk">true</bool>
+    
+    <!-- Enable multi-user -->
+    <integer name="config_multiuserMaximumUsers">8</integer>
 </resources>
