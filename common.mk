@@ -57,12 +57,12 @@ PRODUCT_COPY_FILES += \
 # Packages
 PRODUCT_PACKAGES := \
     com.android.future.usb.accessory \
+    DeviceSettings \
     SamsungServiceMode \
     Torch
 
 # Audio Packages
 PRODUCT_PACKAGES += \
-    AdvancedDisplay \
     audio.primary.exynos4 \
     audio.a2dp.default \
     audio.usb.default \
@@ -70,7 +70,7 @@ PRODUCT_PACKAGES += \
 
 # HAL
 PRODUCT_PACKAGES += \
-	camera.smdk4210 \
+    camera.smdk4210 \
     gralloc.exynos4 \
     hwcomposer.exynos4 \
     libnetcmdiface \
