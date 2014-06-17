@@ -178,3 +178,6 @@ BOARD_HAL_STATIC_LIBRARIES := libhealthd.exynos4
 
 # Use the non-open-source parts, if they're present
 -include vendor/samsung/galaxys2-common/BoardConfigVendor.mk
+
+# External apps on SDCard
+TARGET_EXTERNAL_APPS = sdcard0
