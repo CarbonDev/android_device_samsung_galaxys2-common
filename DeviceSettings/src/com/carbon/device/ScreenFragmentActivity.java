@@ -16,12 +16,15 @@
 
 package com.carbon.device;
 
+import android.os.UserHandle;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.provider.Settings;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -81,6 +84,19 @@ public class ScreenFragmentActivity extends PreferenceFragment {
         }
     }
     
+    private static void setButtonBrightnessValue(Context context, String value)
+    {
+        ContentResolver resolver = context.getContentResolver();
+        int curValue = Settings.System.getIntForUser(resolver,
+            Settings.System.BUTTON_BRIGHTNESS, -1, UserHandle.USER_CURRENT);
+        int newValue = Integer.parseInt(value);
+        if (curValue != newValue) {
+            Settings.System.putIntForUser(resolver,
+                Settings.System.BUTTON_BRIGHTNESS, newValue, UserHandle.USER_CURRENT);
+        }
+        Utils.writeValue(FILE_TOUCHKEY_BRIGHTNESS, value);
+    }
+
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
 
@@ -91,11 +107,11 @@ public class ScreenFragmentActivity extends PreferenceFragment {
         if (key.compareTo(DeviceSettings.KEY_TOUCHKEY_LIGHT) == 0) {
             if (((CheckBoxPreference)preference).isChecked()) {
                 Utils.writeValue(FILE_TOUCHKEY_DISABLE, "0");
-                Utils.writeValue(FILE_TOUCHKEY_BRIGHTNESS, "1");
+                setButtonBrightnessValue(getActivity(), "1");
                 preferenceScreen.findPreference(DeviceSettings.KEY_TOUCHKEY_TIMEOUT).setEnabled(true);
             } else {
                 Utils.writeValue(FILE_TOUCHKEY_DISABLE, "1");
-                Utils.writeValue(FILE_TOUCHKEY_BRIGHTNESS, "2");
+                setButtonBrightnessValue(getActivity(), "2");
                 preferenceScreen.findPreference(DeviceSettings.KEY_TOUCHKEY_TIMEOUT).setEnabled(false);
             }
         }
@@ -112,6 +128,6 @@ public class ScreenFragmentActivity extends PreferenceFragment {
         boolean light = sharedPrefs.getBoolean(DeviceSettings.KEY_TOUCHKEY_LIGHT, true);
 
         Utils.writeValue(FILE_TOUCHKEY_DISABLE, light ? "0" : "1");
-        Utils.writeValue(FILE_TOUCHKEY_BRIGHTNESS, light ? "1" : "2");
+        setButtonBrightnessValue(context, light ? "1" : "2");
     }
 }
